@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 
@@ -68,5 +70,8 @@ def on_change(data):
          {"oldUsername": old, "newUsername": new},
          broadcast=True)
 
+# 確保這行永遠在檔案的最底部！
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=5000, debug=True)
+    # 自動抓取 Render 提供的 Port，如果在自己電腦上就預設使用 5000
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host="0.0.0.0", port=port)
